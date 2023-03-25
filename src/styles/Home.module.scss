@@ -1,6 +1,11 @@
+@import './mixins.scss';
+
 .inputsContainer {
   display: flex;
   flex-wrap: wrap;
   gap: 1.3em;
   font-size: 1.3rem;
+  @include respond(phone) {
+    flex-direction: column;
+  }
 }

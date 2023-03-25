@@ -6,7 +6,8 @@ type Props = {};
 function SwapBtn({}: Props) {
   return (
     <button className={`${styles.swapBtn}`}>
-      <IoIosSwap style={{ color: 'blue' }} />
+      <span>swap the currency</span>
+      <IoIosSwap />
     </button>
   );
 }

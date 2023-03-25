@@ -1,3 +1,9 @@
+@import '/src/styles/mixins';
+
 .resultText {
   font-size: 2rem;
+
+  @include respond(phone) {
+    text-align: center;
+  }
 }
