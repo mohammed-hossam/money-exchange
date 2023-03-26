@@ -1,12 +1,12 @@
 type Props = {
   from: string;
   to: string;
-  q: string;
+  amount: string;
 };
 
-async function getResult({ from, to, q }: Props) {
+async function getResult({ from, to, amount = '1.0' }: Props) {
   try {
-    const url = `${process.env.NEXT_PUBLIC_BASE_URL}/exchange?from=${from}&to=${to}&q=${q}`;
+    const url = `${process.env.NEXT_PUBLIC_BASE_URL}/exchange?from=${from}&to=${to}&q=${amount}`;
     const res = await fetch(url, {
       headers: {
         'X-RapidAPI-Key': `${process.env.NEXT_PUBLIC_RAPIDKEY}`,

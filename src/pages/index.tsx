@@ -10,12 +10,10 @@ import ResetBtn from '@/components/resetBtn/ResetBtn';
 import SwapBtn from '@/components/swapBtn/SwapBtn';
 import ResultText from '@/components/resultText/ResultText';
 import { getCurrencyTypes } from '@/utils/getCurrencyTypes';
+import { wrapper } from '@/store';
+import { setCurrencyTypes } from '@/store/currencyReducer';
 
-type HomeProps = { currencyTypes: CurrencyTypes };
-
-export default function Home({ currencyTypes }: HomeProps) {
-  console.log(currencyTypes);
-
+export default function Home() {
   return (
     <>
       <Head>
@@ -26,21 +24,26 @@ export default function Home({ currencyTypes }: HomeProps) {
       </Head>
       <div className={`${styles.inputsContainer}`}>
         <TextInput />
-        <SelectInput htmlFor="from" label="From" />
+        <SelectInput htmlFor="from" label="From" type="from" />
         <SwapBtn />
-        <SelectInput htmlFor="to" label="To" />
+        <SelectInput htmlFor="to" label="To" type="to" />
       </div>
       <ResetBtn />
       <ResultText />
-      {/* <section className={styles.main}><Exhange />dsdsds</section> */}
     </>
   );
 }
 
-export async function getServerSideProps() {
-  const data = await getCurrencyTypes();
-
-  console.log(data);
-  // Pass data to the page via props
-  return { props: { currencyTypes: data } };
-}
+export const getServerSideProps = wrapper.getServerSideProps(
+  (store) =>
+    async ({ params }) => {
+      const data = await getCurrencyTypes();
+      store.dispatch(setCurrencyTypes(data));
+      // console.log('State on server', store.getState());
+      return {
+        props: {
+          currencyTypes: data,
+        },
+      };
+    }
+);

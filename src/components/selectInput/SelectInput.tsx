@@ -1,21 +1,37 @@
-import { ReactNode, useState, ChangeEvent, useRef, useEffect } from 'react';
+import { useCallback, useState, useRef } from 'react';
 import styles from './SelectInput.module.scss';
 import InputContainer from '../inputContainer/inputContainer';
 import { IoIosArrowDown } from 'react-icons/io';
 import useOutsideClick from '@/hooks/useOutsideClick';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  selectCurrencyTypes,
+  selectFrom,
+  selectTo,
+  setFrom,
+  setTo,
+  fetchFinalResult,
+} from '@/store/currencyReducer';
+import { AnyAction } from '@reduxjs/toolkit';
 
 type TextInputProps = {
   htmlFor: string;
   label: string;
+  type: 'from' | 'to';
+  // currencyTypes: CurrencyTypes;
 };
 
-function SelectInput({ htmlFor, label }: TextInputProps) {
+function SelectInput({ htmlFor, label, type }: TextInputProps) {
+  const currencyTypes = useSelector(selectCurrencyTypes);
+  const from = useSelector(selectFrom);
+  const to = useSelector(selectTo);
+  const dispatch = useDispatch();
+  const currency = type === 'from' ? from : to;
+  const reverseCurrency = type === 'from' ? to : from;
   const selectInputRef = useRef<null | HTMLUListElement>(null);
   const filterBtnRef = useRef<null | HTMLButtonElement>(null);
 
   const [dropdown, setDropDown] = useState(false);
-  const [curreny, setCurrency] = useState('Currency');
-  const [error, setError] = useState('');
 
   useOutsideClick({
     ref: selectInputRef,
@@ -27,13 +43,22 @@ function SelectInput({ htmlFor, label }: TextInputProps) {
     setDropDown(!dropdown);
   };
 
-  function handleInput(e: ChangeEvent<HTMLInputElement>) {
-    console.log(e.target.value);
-    const value = e.target.value;
-    if (!value) setError('mandatory');
-    if (Number.isNaN(Number(value))) setError('must be a number');
-    if (value && error) setError('');
-    setCurrency(value);
+  function handleInput(e: React.MouseEvent<HTMLUListElement, MouseEvent>) {
+    const target = e.target as HTMLInputElement;
+
+    if (target.id !== currency && target.id !== reverseCurrency) {
+      // setCurrency(target.id);
+      if (type === 'from') {
+        dispatch(setFrom(target.id));
+        if (to !== 'Currency')
+          dispatch(fetchFinalResult() as unknown as AnyAction);
+      } else {
+        dispatch(setTo(target.id));
+        if (from !== 'Currency')
+          dispatch(fetchFinalResult() as unknown as AnyAction);
+      }
+      setDropDown(false);
+    }
   }
 
   return (
@@ -46,7 +71,7 @@ function SelectInput({ htmlFor, label }: TextInputProps) {
             className={`${styles.curreny__filter__button}`}
             onClick={viewDropDown}
           >
-            <span>{curreny}</span>
+            <span>{currency}</span>
             <i>
               <IoIosArrowDown />
             </i>
@@ -54,25 +79,27 @@ function SelectInput({ htmlFor, label }: TextInputProps) {
           {dropdown && (
             <ul
               className={`${styles.curreny__filter__dropdown}`}
-              onClick={(e) => {
-                if (e.target.id !== curreny) {
-                  setCurrency(e.target.id);
-                  setDropDown(false);
-                }
-              }}
+              onClick={handleInput}
               ref={selectInputRef}
             >
-              <li id="africa" className={`${styles.disabled}`}>
-                Africa
-              </li>
-              <li id="ame">Americas</li>
-              <li id="oce">Oceana</li>
-              <li id="europe">Europe</li>
-              <li id="asia">Asia</li>
+              {currencyTypes.map((el) => {
+                return (
+                  <li
+                    id={el}
+                    className={`${
+                      el === currency || el === reverseCurrency
+                        ? styles.disabled
+                        : ''
+                    }`}
+                    key={el}
+                  >
+                    {el}
+                  </li>
+                );
+              })}
             </ul>
           )}
         </div>
-        {error ? <span>{error}</span> : null}
       </InputContainer>
     </>
   );
