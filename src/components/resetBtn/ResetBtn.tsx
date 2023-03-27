@@ -23,7 +23,11 @@ function ResetBtn() {
       {from === 'Currency' || to === 'Currency' || amount === '' ? (
         ''
       ) : (
-        <button className={`${styles.resetBtn}`} onClick={handleResetBtn}>
+        <button
+          className={`${styles.resetBtn}`}
+          onClick={handleResetBtn}
+          data-cy="reset"
+        >
           Reset
         </button>
       )}

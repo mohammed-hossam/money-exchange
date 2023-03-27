@@ -21,7 +21,9 @@ function ResultText() {
         {from === 'Currency' || to === 'Currency' || amount === '' ? (
           ''
         ) : (
-          <p className={`${styles.resultText}`}>{result}</p>
+          <p className={`${styles.resultText}`} data-cy="resultText">
+            {result}
+          </p>
         )}
         {load && <p className={`${styles.loader}`}></p>}
       </div>

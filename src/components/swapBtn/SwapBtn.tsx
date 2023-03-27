@@ -16,7 +16,11 @@ function SwapBtn({}: Props) {
   }, [dispatch]);
 
   return (
-    <button className={`${styles.swapBtn}`} onClick={handleSwapBtn}>
+    <button
+      className={`${styles.swapBtn}`}
+      onClick={handleSwapBtn}
+      data-cy="swap"
+    >
       <span>swap the currency</span>
       <IoIosSwap />
     </button>

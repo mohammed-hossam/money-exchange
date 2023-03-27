@@ -2,10 +2,14 @@ import { CurrencyState } from '@/store/currencyReducer';
 
 function formatResult(
   state: CurrencyState,
-  action: { payload: any; type: string }
+  action: { payload: number; type: string }
 ) {
   let finalResult = '';
-  if (action.payload && action.payload !== 'Currency') {
+  if (
+    action.payload &&
+    state?.from !== 'Currency' &&
+    state?.to !== 'Currency'
+  ) {
     const formatter1 = new Intl.NumberFormat('de-DE', {
       style: 'currency',
       currency: state.from,
