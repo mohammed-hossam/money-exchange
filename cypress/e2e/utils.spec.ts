@@ -1,5 +1,3 @@
-// import mockUnits from '../fixtures/currency.json';
-
 import { formatResult } from '../../src/utils/formatResult';
 
 describe('utils', function () {

@@ -33,7 +33,7 @@ export const fetchFinalResult = createAsyncThunk(
   'currency/result',
   async (_, thunkAPI) => {
     const state = thunkAPI.getState() as AppState;
-    console.log(state.currency);
+
     const { from, to, amount } = state.currency;
     if (
       from === 'Currency' ||
@@ -111,11 +111,9 @@ export const currencyReducer = createSlice({
       };
     },
     [fetchFinalResult.pending.type]: (state, action) => {
-      console.log('loading');
       state.status = 'loading';
     },
     [fetchFinalResult.fulfilled.type]: (state, action) => {
-      console.log('fulfilled');
       const finalResult = formatResult(state, action);
 
       return {
@@ -126,9 +124,6 @@ export const currencyReducer = createSlice({
       };
     },
     [fetchFinalResult.rejected.type]: (state, action) => {
-      console.log('rejected');
-      console.log(action);
-
       return {
         ...state,
         status: 'idle',

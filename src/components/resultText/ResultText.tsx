@@ -18,7 +18,11 @@ function ResultText() {
   return (
     <>
       <div className={`${styles.container}`}>
-        {from === 'Currency' || to === 'Currency' || amount === '' ? (
+        {from === 'Currency' ||
+        to === 'Currency' ||
+        amount === '' ||
+        Number(amount) <= 0 ||
+        Number.isNaN(Number(amount)) ? (
           ''
         ) : (
           <p className={`${styles.resultText}`} data-cy="resultText">

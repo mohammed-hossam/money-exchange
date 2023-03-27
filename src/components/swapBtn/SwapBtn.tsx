@@ -5,11 +5,9 @@ import { useDispatch } from 'react-redux';
 import { fetchFinalResult, swap } from '@/store/currencyReducer';
 import { AnyAction } from '@reduxjs/toolkit';
 
-type Props = {};
-
-function SwapBtn({}: Props) {
+function SwapBtn() {
   const dispatch = useDispatch();
-  // console.log('2', to);
+
   const handleSwapBtn = useCallback(() => {
     dispatch(swap());
     dispatch(fetchFinalResult() as unknown as AnyAction);

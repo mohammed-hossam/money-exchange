@@ -20,7 +20,11 @@ function ResetBtn() {
 
   return (
     <>
-      {from === 'Currency' || to === 'Currency' || amount === '' ? (
+      {from === 'Currency' ||
+      to === 'Currency' ||
+      amount === '' ||
+      Number(amount) <= 0 ||
+      Number.isNaN(Number(amount)) ? (
         ''
       ) : (
         <button

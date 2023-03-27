@@ -54,7 +54,6 @@ describe('functionality', () => {
       });
 
       //swap
-      console.log(txt1);
       cy.get('[data-cy="swap"]').click();
       cy.get('@val2').then((txt2) => {
         cy.get('label[for="from"]')
